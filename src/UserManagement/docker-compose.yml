@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  usermanagement.api:
+    image: ${DOCKER_REGISTRY-}usermanagementapi
+    build:
+      context: .
+      dockerfile: Modules/UserManagement.Api/Dockerfile
+
+  authorization.api:
+    image: ${DOCKER_REGISTRY-}authorizationapi
+    build:
+      context: .
+      dockerfile: Modules/Authorization.Api/Dockerfile
+
