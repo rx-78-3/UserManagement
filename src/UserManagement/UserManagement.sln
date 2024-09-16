@@ -19,7 +19,47 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common\Com
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{32F92528-AC0D-45FB-AD9F-0B2FDB039780}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.DataAccess.Models", "Common\DataAccess\Common.DataAccess.Models\Common.DataAccess.Models.csproj", "{BF164CD5-FDB5-419F-83FC-D7937D60046F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.DataAccess.Models", "Common\DataAccess\Common.DataAccess.Models\Common.DataAccess.Models.csproj", "{BF164CD5-FDB5-419F-83FC-D7937D60046F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "user-management-web-ui", "user-management-web-ui", "{788E0C26-D93A-4F3B-AAF0-CCC1BC185AC4}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\babel.config.js = user-management-web-ui\babel.config.js
+		user-management-web-ui\Dockerfile = user-management-web-ui\Dockerfile
+		user-management-web-ui\jsconfig.json = user-management-web-ui\jsconfig.json
+		user-management-web-ui\package-lock.json = user-management-web-ui\package-lock.json
+		user-management-web-ui\package.json = user-management-web-ui\package.json
+		user-management-web-ui\README.md = user-management-web-ui\README.md
+		user-management-web-ui\vue.config.js = user-management-web-ui\vue.config.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{2A728AA1-2CAB-471F-9773-666C9AB4B79C}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\public\favicon.ico = user-management-web-ui\public\favicon.ico
+		user-management-web-ui\public\index.html = user-management-web-ui\public\index.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA9F4017-4BB2-4E2B-9A66-8101F4C8433B}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\src\App.vue = user-management-web-ui\src\App.vue
+		user-management-web-ui\src\main.js = user-management-web-ui\src\main.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{AE9651A5-EB37-4454-B4F4-4B8EA48E7E04}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\src\assets\logo.png = user-management-web-ui\src\assets\logo.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{5931290B-9312-47EC-90A7-0D1D5D94C88F}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\src\components\LoginPage.vue = user-management-web-ui\src\components\LoginPage.vue
+		user-management-web-ui\src\components\UsersPage.vue = user-management-web-ui\src\components\UsersPage.vue
+		user-management-web-ui\src\components\WelcomePage.vue = user-management-web-ui\src\components\WelcomePage.vue
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "router", "router", "{CB0D4C91-17B7-452F-8E60-EAD0CCC86C24}"
+	ProjectSection(SolutionItems) = preProject
+		user-management-web-ui\src\router\Index.js = user-management-web-ui\src\router\Index.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +102,11 @@ Global
 		{295D7CF6-1109-4707-9179-4F1D0F8D3DAB} = {06285792-5E39-4446-9639-6960E86C6A40}
 		{61D40BB2-3360-4B79-B9F3-498B1A391022} = {F793C5BC-F900-425C-8192-CAC0A6169D78}
 		{BF164CD5-FDB5-419F-83FC-D7937D60046F} = {06285792-5E39-4446-9639-6960E86C6A40}
+		{2A728AA1-2CAB-471F-9773-666C9AB4B79C} = {788E0C26-D93A-4F3B-AAF0-CCC1BC185AC4}
+		{AA9F4017-4BB2-4E2B-9A66-8101F4C8433B} = {788E0C26-D93A-4F3B-AAF0-CCC1BC185AC4}
+		{AE9651A5-EB37-4454-B4F4-4B8EA48E7E04} = {AA9F4017-4BB2-4E2B-9A66-8101F4C8433B}
+		{5931290B-9312-47EC-90A7-0D1D5D94C88F} = {AA9F4017-4BB2-4E2B-9A66-8101F4C8433B}
+		{CB0D4C91-17B7-452F-8E60-EAD0CCC86C24} = {AA9F4017-4BB2-4E2B-9A66-8101F4C8433B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BF2C52-532E-45AF-BC1E-EA12D12BE080}

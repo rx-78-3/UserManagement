@@ -5,11 +5,12 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "usermanagement.api",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "composeLaunchUrl": "http://localhost:8080",
       "serviceActions": {
         "usermanagement.api": "StartDebugging",
         "authorization.api": "StartDebugging",
-        "users.db": "StartWithoutDebugging"
+        "users.db": "StartWithoutDebugging",
+        "web.ui": "StartWithoutDebugging"
       }
     }
   }

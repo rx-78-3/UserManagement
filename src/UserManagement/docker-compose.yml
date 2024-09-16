@@ -13,3 +13,9 @@ services:
       context: .
       dockerfile: Modules/Authorization.Api/Dockerfile
 
+  web.ui:
+    image: ${DOCKER_REGISTRY-}webui
+    build:
+      context: user-management-web-ui
+      dockerfile: Dockerfile
+

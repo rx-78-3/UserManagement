@@ -13,6 +13,7 @@ services:
   usermanagement.api:
     build:
       dockerfile: Modules/UserManagement.Api/Dockerfile
+    container_name: usermanagement.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=users.db;Database=AuthDb;User Id=sa;Password=DevEnvPassword123;Encrypt=False;
@@ -24,6 +25,7 @@ services:
   authorization.api:
     build:
       dockerfile: Modules/Authorization.Api/Dockerfile
+    container_name: authorization.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=users.db;Database=AuthDb;User Id=sa;Password=DevEnvPassword123;Encrypt=False;
@@ -31,3 +33,14 @@ services:
       - "5002:8080"
     depends_on:
       - users.db
+
+  web.ui:
+    build:
+      context: user-management-web-ui
+      dockerfile: Dockerfile
+    container_name: web.ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - usermanagement.api
+      - authorization.api
