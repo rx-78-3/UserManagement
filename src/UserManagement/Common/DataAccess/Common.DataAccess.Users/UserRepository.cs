@@ -27,9 +27,9 @@ public class UserRepository(string connectionString) : IUserRepository
 
         using var gridReader = await connection.QueryMultipleAsync(sql, new { Offset = offset, PageSize = pageSize });
         var users = await gridReader.ReadAsync<User>();
-        var count = await gridReader.ReadFirstAsync<long>();
+        var totalCount = await gridReader.ReadFirstAsync<long>();
 
-        return new PaginatedResult<User>(count, users);
+        return new PaginatedResult<User>(totalCount, users);
     }
 
     public async Task<IEnumerable<User>> GetByIdsAsync(IEnumerable<Guid> ids)

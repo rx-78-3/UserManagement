@@ -9,12 +9,12 @@ public record PaginatedResponse<TEntity>()
     {
         PageIndex = request.PageIndex;
         PageSize = request.PageSize;
-        Count = result.Count;
+        TotalCount = result.TotalCount;
         Data = result.Data;
     }
 
     public int PageIndex { get; }
     public int PageSize { get; }
-    public long Count { get; }
+    public long TotalCount { get; }
     public IEnumerable<TEntity> Data { get; } = Array.Empty<TEntity>();
 }

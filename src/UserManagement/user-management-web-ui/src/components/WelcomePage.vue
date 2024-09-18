@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Welcome, {{ username }}! This page is for authenticated users only.</h2>
-    <button @click="goToUsers">Go to Users Management</button>
+    <el-button type="primary" @click="goToUsers">Go to Users Management</el-button>
   </div>
 </template>
 

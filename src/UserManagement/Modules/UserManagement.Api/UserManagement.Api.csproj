@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common\Common.csproj" />
-    <ProjectReference Include="..\..\Common\DataAccess\Common.Users.Db\Common.DataAccess.Users.csproj" />
+    <ProjectReference Include="..\..\Common\DataAccess\Common.DataAccess.Users\Common.DataAccess.Users.csproj" />
   </ItemGroup>
 
 </Project>
