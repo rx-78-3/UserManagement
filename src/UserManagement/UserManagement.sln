@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.Api", "Modules\UserManagement.Api\UserManagement.Api.csproj", "{C31CF045-07BE-41A2-9B8A-CFDFE3B7237B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Api", "Modules\Authorization.Api\Authorization.Api.csproj", "{6A3BF443-975B-43AB-811C-F82AF79E85D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Api", "Modules\Identity.Api\Identity.Api.csproj", "{6A3BF443-975B-43AB-811C-F82AF79E85D9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.DataAccess.Users", "Common\DataAccess\Common.DataAccess.Users\Common.DataAccess.Users.csproj", "{295D7CF6-1109-4707-9179-4F1D0F8D3DAB}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{32F92528-AC0D-45FB-AD9F-0B2FDB039780}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.DataAccess.Models", "Common\DataAccess\Common.DataAccess.Models\Common.DataAccess.Models.csproj", "{BF164CD5-FDB5-419F-83FC-D7937D60046F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.ApiTests", "Modules\Identity.ApiTests\Identity.ApiTests.csproj", "{8135E9D1-9803-4A8B-A56B-B6D4E7C18690}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{BF164CD5-FDB5-419F-83FC-D7937D60046F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF164CD5-FDB5-419F-83FC-D7937D60046F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF164CD5-FDB5-419F-83FC-D7937D60046F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8135E9D1-9803-4A8B-A56B-B6D4E7C18690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8135E9D1-9803-4A8B-A56B-B6D4E7C18690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8135E9D1-9803-4A8B-A56B-B6D4E7C18690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8135E9D1-9803-4A8B-A56B-B6D4E7C18690}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

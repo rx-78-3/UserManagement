@@ -9,4 +9,8 @@
         margin: 20px;
         max-width: 800px;
     }
+    
+    .margin-bottom-10 {
+      margin-bottom: 10px;
+    }
 </style>

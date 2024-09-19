@@ -18,7 +18,7 @@ public class UserRepository(string connectionString) : IUserRepository
         var sql = @"
                 SELECT * 
                 FROM Users
-                ORDER BY Id
+                ORDER BY UserName
                 OFFSET @Offset ROWS
                 FETCH NEXT @PageSize ROWS ONLY
                 

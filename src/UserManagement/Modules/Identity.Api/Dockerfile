@@ -9,20 +9,20 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Modules/UserManagement.Api/UserManagement.Api.csproj", "Modules/UserManagement.Api/"]
+COPY ["Modules/Identity.Api/Identity.Api.csproj", "Modules/Identity.Api/"]
 COPY ["Common/Common/Common.csproj", "Common/Common/"]
 COPY ["Common/DataAccess/Common.DataAccess.Users/Common.DataAccess.Users.csproj", "Common/DataAccess/Common.DataAccess.Users/"]
 COPY ["Common/DataAccess/Common.DataAccess.Models/Common.DataAccess.Models.csproj", "Common/DataAccess/Common.DataAccess.Models/"]
-RUN dotnet restore "./Modules/UserManagement.Api/UserManagement.Api.csproj"
+RUN dotnet restore "./Modules/Identity.Api/Identity.Api.csproj"
 COPY . .
-WORKDIR "/src/Modules/UserManagement.Api"
-RUN dotnet build "./UserManagement.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Modules/Identity.Api"
+RUN dotnet build "./Identity.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./UserManagement.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Identity.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "UserManagement.Api.dll"]
+ENTRYPOINT ["dotnet", "Identity.Api.dll"]

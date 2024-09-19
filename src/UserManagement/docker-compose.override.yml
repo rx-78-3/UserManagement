@@ -12,26 +12,38 @@ services:
 
   usermanagement.api:
     build:
+      context: .
       dockerfile: Modules/UserManagement.Api/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
     container_name: usermanagement.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=users.db;Database=AuthDb;User Id=sa;Password=DevEnvPassword123;Encrypt=False;
       - ConnectionStrings__MasterSqlServer=Server=users.db;User Id=sa;Password=DevEnvPassword123;Encrypt=False;
       - ServiceAddresses__FrontendUrl=http://localhost:8080
+      - JwtSettings__SecretKey=Dev_Env_Supersecret_Very_Long_Key_2000
+      - JwtSettings__Issuer=auth.api
+      - JwtSettings__Audience=usermanagement
     ports:
       - "5001:8080"
     depends_on:
       - users.db
 
-  authorization.api:
+  identity.api:
     build:
-      dockerfile: Modules/Authorization.Api/Dockerfile
-    container_name: authorization.api
+      context: .
+      dockerfile: Modules/Identity.Api/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+    container_name: identity.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__SqlServer=Server=users.db;Database=AuthDb;User Id=sa;Password=DevEnvPassword123;Encrypt=False;
       - ServiceAddresses__FrontendUrl=http://localhost:8080
+      - JwtSettings__SecretKey=Dev_Env_Supersecret_Very_Long_Key_2000
+      - JwtSettings__Issuer=auth.api
+      - JwtSettings__Audience=usermanagement
     ports:
       - "5002:8080"
     depends_on:
@@ -43,10 +55,11 @@ services:
       dockerfile: Dockerfile
       args:
         # URLs for the APIs
-        VUE_APP_USER_MANAGEMENT_API_URL: http://localhost:5001/users
+        VUE_APP_USER_MANAGEMENT_API_URL: http://localhost:5001
+        VUE_APP_IDENTITY_API_URL: http://localhost:5002
     container_name: web.ui
     ports:
       - "8080:80"
     depends_on:
       - usermanagement.api
-      - authorization.api
+      - identity.api

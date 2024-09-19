@@ -7,11 +7,11 @@ services:
       context: .
       dockerfile: Modules/UserManagement.Api/Dockerfile
 
-  authorization.api:
-    image: ${DOCKER_REGISTRY-}authorizationapi
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
     build:
       context: .
-      dockerfile: Modules/Authorization.Api/Dockerfile
+      dockerfile: Modules/Identity.Api/Dockerfile
 
   web.ui:
     image: ${DOCKER_REGISTRY-}webui

@@ -57,7 +57,6 @@
 <script>
 import { getUsers, updateUsers } from '@/services/api/userManagementService';
 
-
 export default {
   data() {
     return {
@@ -78,6 +77,11 @@ export default {
       try {
         const response = await getUsers(this.pageIndex - 1, this.pageSize);
         this.users = response.data.data;
+
+        this.users.forEach(user => {
+          user.initialIsActive = user.isActive;
+        });
+
         this.totalCount = response.data.totalCount;
       } catch (err) {
         this.error = 'Error fetching users. Please try again later.';
@@ -91,7 +95,13 @@ export default {
       user.showDetails = false;
     },
     markModified(user) {
-      if (!this.modifiedUsers.includes(user)) {
+      if (user.initialIsActive === user.isActive) {
+        const index = this.modifiedUsers.indexOf(user);
+        if (index > -1) {
+          this.modifiedUsers.splice(index, 1);
+        }
+      }
+      else if (!this.modifiedUsers.includes(user)) {
         this.modifiedUsers.push(user);
       }
     },
@@ -116,9 +126,5 @@ export default {
 <style scoped>
     .pagination {
         margin-top: 20px;
-    }
-    
-    .margin-bottom-10 {
-      margin-bottom: 10px;
     }
 </style>

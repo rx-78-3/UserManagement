@@ -1,6 +1,5 @@
 ﻿using Carter;
 using Common.Pagination;
-using Mapster;
 using MediatR;
 using UserManagement.Api.Methods.GetUsers.Models;
 
@@ -20,10 +19,11 @@ public class GetUsersEndpoint : ICarterModule
 
             return Results.Ok(response);
         })
+            .RequireAuthorization()
             .WithName("GetUsers")
             .WithSummary("GetUsers")
             .WithDescription("Get all users")
             .Produces<GetUsersResponse>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status400BadRequest);
     }
 }

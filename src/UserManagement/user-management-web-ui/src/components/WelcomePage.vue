@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { USERS_URL } from '@/router/urls';
+
 export default {
   computed: {
     username() {
@@ -14,7 +16,7 @@ export default {
   },
   methods: {
     goToUsers() {
-      this.$router.push({ name: 'Users' });
+      this.$router.push(USERS_URL);
     },
   },
 };

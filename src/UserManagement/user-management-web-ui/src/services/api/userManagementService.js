@@ -1,9 +1,10 @@
-import axios from 'axios';
+import createApiClient from './axiosConfiguration';
 
 const API_URL = process.env.VUE_APP_USER_MANAGEMENT_API_URL;
+const apiClient = createApiClient(API_URL);
 
 export const getUsers = (pageIndex, pageSize) => {
-  return axios.get(`${API_URL}`, {
+  return apiClient.get('/users', {
     params: {
       pageIndex: pageIndex,
       pageSize: pageSize,
@@ -12,5 +13,5 @@ export const getUsers = (pageIndex, pageSize) => {
 };
 
 export const updateUsers = (modifiedUsers) => {
-  return axios.put(`${API_URL}`, { users: modifiedUsers });
+  return apiClient.put('/users', { users: modifiedUsers });
 };
