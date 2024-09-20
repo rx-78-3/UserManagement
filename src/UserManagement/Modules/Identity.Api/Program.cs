@@ -1,6 +1,6 @@
 using Common.DataAccess.Users;
 using Common.Exceptions.Handler;
-using Identity.Api;
+using Identity.Api.Models;
 using Identity.Api.Services;
 using Identity.Api.Services.Abstractions;
 
@@ -18,7 +18,14 @@ builder.Services
                  .AllowAnyHeader()
                  .AllowAnyMethod());
      })
+
+    // Swagger.
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+
     .AddExceptionHandler<ServiceWideExceptionHandler>()
+
+    // Add services.
     .AddScoped<IUserRepository>(_ => new UserRepository(connectionString))
     .AddSingleton<IConfiguration>(builder.Configuration)
     .AddSingleton<IPasswordHasher, PasswordHasher>()
@@ -29,7 +36,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseCors("AllowSpecificOrigin");
 
-app.MapPost("/login", async (IAuthService authService, ILogger<Program> logger, LoginModel model) =>
+app.MapPost("/login", async (IAuthService authService, ILogger<Program> logger, LoginRequest model) =>
 {
     if (string.IsNullOrWhiteSpace(model.UserName) || string.IsNullOrWhiteSpace(model.Password))
     {
@@ -54,16 +61,26 @@ app.MapPost("/login", async (IAuthService authService, ILogger<Program> logger, 
     var token = authService.GenerateJwtToken(user);
 
     logger.LogInformation($"User {model.UserName} logged in successfully.");
-    return Results.Ok(new { Token = token }); // ToDo: Add refresh token.
+    return Results.Ok(new LoginResponse(token)); // ToDo: Add refresh token.
 })
     .WithName("Login")
     .WithSummary("Login")
     .WithDescription("Login")
-    .Produces(StatusCodes.Status200OK)
+    .Produces<LoginResponse>(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status401Unauthorized)
     .Produces(StatusCodes.Status403Forbidden);
 
 app.UseExceptionHandler(options => { });
+
+if (app.Environment.IsDevelopment())
+{
+    // Enable middleware to serve generated Swagger as a JSON endpoint.
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
+}
 
 app.Run();

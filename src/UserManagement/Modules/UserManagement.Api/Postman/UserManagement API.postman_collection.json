@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "f6bc8b95-e555-4239-a71f-822ad7738ff8",
+		"name": "UserManagement API",
+		"description": "Collection for UserManagement API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37642492"
+	},
+	"item": [
+		{
+			"name": "Get Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: `${pm.environment.get(\"IdentityBaseUrl\")}/login`,\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            userName: pm.environment.get(\"TestUserName\"),\r",
+							"            password: pm.environment.get(\"TestUserPassword\")\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    var jsonData = res.json();\r",
+							"    pm.environment.set(\"authToken\", jsonData.token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{userManagementBaseUrl}}/users?pageIndex=0&pageSize=10",
+					"host": [
+						"{{userManagementBaseUrl}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Users - Valid Request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: `${pm.environment.get(\"IdentityBaseUrl\")}/login`,\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            userName: pm.environment.get(\"TestUserName\"),\r",
+							"            password: pm.environment.get(\"TestUserPassword\")\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    var jsonData = res.json();\r",
+							"    pm.environment.set(\"authToken\", jsonData.token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"id\": \"6E540F06-0EA0-4BF4-B7C8-6A6A2F2F9E3A\",\r\n      \"isActive\": false\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{userManagementBaseUrl}}/users",
+					"host": [
+						"{{userManagementBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Users - Empty Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: `${pm.environment.get(\"IdentityBaseUrl\")}/login`,\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            userName: pm.environment.get(\"TestUserName\"),\r",
+							"            password: pm.environment.get(\"TestUserPassword\")\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    var jsonData = res.json();\r",
+							"    pm.environment.set(\"authToken\", jsonData.token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n      \"isActive\": true\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{userManagementBaseUrl}}/users",
+					"host": [
+						"{{userManagementBaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

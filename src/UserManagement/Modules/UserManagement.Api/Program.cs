@@ -38,8 +38,16 @@ builder.Services
         config.AddOpenBehavior(typeof(LoggingBehavior<,>));
     })
     .AddValidatorsFromAssembly(assembly)
+
+    // Swagger.
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+
     .AddExceptionHandler<ServiceWideExceptionHandler>()
+
+    // Add services.
     .AddScoped<IUserRepository>(_ => new UserRepository(connectionString))
+
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,6 +82,13 @@ await DatabaseInitialization.InitializeDatabase(masterConnectionString, connecti
 if (app.Environment.IsDevelopment())
 {
     await TestDataInitialization.InitializeTestData(connectionString);
+    
+    // Enable middleware to serve generated Swagger as a JSON endpoint.
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
 
 app.Run();

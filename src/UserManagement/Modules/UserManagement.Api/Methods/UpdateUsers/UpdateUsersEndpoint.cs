@@ -1,7 +1,6 @@
 ﻿using Carter;
 using Mapster;
 using MediatR;
-using UserManagement.Api.Methods.GetUsers.Models;
 using UserManagement.Api.Methods.UpdateUsers.Models;
 
 namespace UserManagement.Api.Methods.UpdateUsers;
@@ -24,7 +23,7 @@ public class UpdateUsersEndpoint : ICarterModule
             .WithName("EditUsers")
             .WithSummary("EditUsers")
             .WithDescription("Edit users")
-            .Produces<GetUsersResponse>(StatusCodes.Status200OK)
+            .Produces<UpdateUsersResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest);
     }
 }
