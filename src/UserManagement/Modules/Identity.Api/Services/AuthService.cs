@@ -36,7 +36,7 @@ public class AuthService : IAuthService
         {
             Subject = new ClaimsIdentity(
             [
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("Id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             ]),
             Expires = DateTime.UtcNow.AddMinutes(30),

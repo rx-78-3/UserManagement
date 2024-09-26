@@ -5,7 +5,7 @@ namespace Common.DataAccess.Users;
 public interface IUserRepository
 {
     Task<PaginatedResult<User>> GetAsync(int pageIndex, int pageSize);
-    Task<IEnumerable<User>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<IEnumerable<User>> GetByActivityAsync(bool isActive);
     Task<User?> GetByUserNameAsync(string userName);
 
     /// <summary>

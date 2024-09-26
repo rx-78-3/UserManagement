@@ -7,38 +7,43 @@ namespace Common.DataAccess.Users;
 
 public class UserRepository(string connectionString) : IUserRepository
 {
-    private const int UniqueConstraintViolationCode = 2627;
-
     public async Task<PaginatedResult<User>> GetAsync(int pageIndex, int pageSize)
     {
         using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync();
+        using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
-        // ToDo move to a stored procedure
         var offset = pageIndex * pageSize;
-        var sql = @"
-                SELECT * 
-                FROM Users
-                ORDER BY UserName
-                OFFSET @Offset ROWS
-                FETCH NEXT @PageSize ROWS ONLY
-                
-                SELECT COUNT(*) 
-                FROM Users";
 
-        using var gridReader = await connection.QueryMultipleAsync(sql, new { Offset = offset, PageSize = pageSize });
-        var users = await gridReader.ReadAsync<User>();
-        var totalCount = await gridReader.ReadFirstAsync<long>();
+        try
+        {
+            using var gridReader = await connection.QueryMultipleAsync(
+                "GetUsers",
+                new { Offset = offset, PageSize = pageSize },
+                transaction,
+                commandType: CommandType.StoredProcedure);
 
-        return new PaginatedResult<User>(totalCount, users);
+            var users = await gridReader.ReadAsync<User>();
+            var totalCount = await gridReader.ReadFirstAsync<long>();
+
+            await transaction.CommitAsync();
+
+            return new PaginatedResult<User>(totalCount, users);
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
-    public async Task<IEnumerable<User>> GetByIdsAsync(IEnumerable<Guid> ids)
+    public async Task<IEnumerable<User>> GetByActivityAsync(bool isActive)
     {
         using var connection = new SqlConnection(connectionString);
 
-        var sql = "SELECT * FROM Users WHERE Id IN @Ids";
+        var sql = "SELECT * FROM Users WHERE IsActive = @IsActive";
 
-        return await connection.QueryAsync<User>(sql, new { Ids = ids });
+        return await connection.QueryAsync<User>(sql, new { IsActive = isActive });
     }
 
     public async Task<User?> GetByUserNameAsync(string userName)
@@ -58,8 +63,6 @@ public class UserRepository(string connectionString) : IUserRepository
     public async Task<int> UpdateAsync(IEnumerable<User> users)
     {
         using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
-        using var transaction = await connection.BeginTransactionAsync();
 
         var userTable = new DataTable();
         userTable.Columns.Add("Id", typeof(Guid));
@@ -71,11 +74,8 @@ public class UserRepository(string connectionString) : IUserRepository
         }
 
         var parameters = new { UserUpdates = userTable.AsTableValuedParameter("dbo.UsersToUpdate") };
+        var updatedUsersNumber = await connection.ExecuteAsync("UpdateUser", parameters);
 
-        var udpatedUsersNumber = await connection.ExecuteAsync("UpdateUser", parameters, transaction);
-
-        await transaction.CommitAsync();
-
-        return udpatedUsersNumber;
+        return updatedUsersNumber;
     }
 }

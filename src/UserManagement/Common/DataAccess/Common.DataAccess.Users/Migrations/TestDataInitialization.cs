@@ -15,7 +15,7 @@ public static class TestDataInitialization
 
         if (tableExists == 0)
         {
-            // Password is always password123
+            // Password is always password123.
             await connection.ExecuteAsync(@"
                     INSERT INTO Users (Id, Username, PasswordHash, IsActive) VALUES 
                     ('9A8034C8-1DFB-4BD9-A16A-200979B8282F', 'someUser1',  '2d6e42cd548b8bbcd6064dbb2552a15ed289e9f33f28eac50ba6684f33e17165', 1),

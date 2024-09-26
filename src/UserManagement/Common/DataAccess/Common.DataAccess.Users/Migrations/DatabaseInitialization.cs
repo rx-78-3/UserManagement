@@ -59,6 +59,22 @@ public static class DatabaseInitialization
                         INNER JOIN @UserUpdates updates ON u.Id = updates.Id
                             AND u.IsActive <> updates.IsActive
                     END");
+
+            await connection.ExecuteAsync(@"
+                    CREATE PROCEDURE GetUsers
+                        @Offset INT,
+                        @PageSize INT
+                    AS
+                    BEGIN
+                        SELECT * 
+                        FROM Users
+                        ORDER BY UserName
+                        OFFSET @Offset ROWS
+                        FETCH NEXT @PageSize ROWS ONLY
+                
+                        SELECT COUNT(*) 
+                        FROM Users
+                    END");
         }
     }
 

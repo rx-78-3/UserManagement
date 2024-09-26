@@ -1,4 +1,5 @@
 using Carter;
+using Common.Cache.Users;
 using Common.DataAccess.Users;
 using Common.DataAccess.Users.Migrations;
 using Common.Exceptions.Handler;
@@ -38,6 +39,7 @@ builder.Services
         config.AddOpenBehavior(typeof(LoggingBehavior<,>));
     })
     .AddValidatorsFromAssembly(assembly)
+    .AddMemoryCache()
 
     // Swagger.
     .AddEndpointsApiExplorer()
@@ -47,6 +49,7 @@ builder.Services
 
     // Add services.
     .AddScoped<IUserRepository>(_ => new UserRepository(connectionString))
+    .AddSingleton<IUserCacheService, UserCacheService>()
 
     .AddAuthentication(options =>
     {

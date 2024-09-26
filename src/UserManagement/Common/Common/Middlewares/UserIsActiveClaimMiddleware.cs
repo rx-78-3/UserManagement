@@ -1,8 +1,6 @@
-﻿using Common.DataAccess.Users;
+﻿using Common.Cache.Users;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace Common.Middleware;
 
@@ -10,34 +8,26 @@ public class UserIsActiveClaimMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<UserIsActiveClaimMiddleware> _logger;
+    private readonly IUserCacheService _userCacheService;
 
-    public UserIsActiveClaimMiddleware(RequestDelegate next, ILogger<UserIsActiveClaimMiddleware> logger)
+    public UserIsActiveClaimMiddleware(RequestDelegate next, ILogger<UserIsActiveClaimMiddleware> logger, IUserCacheService userCacheService)
     {
         _next = next;
         _logger = logger;
+        _userCacheService = userCacheService;
     }
 
-    public async Task InvokeAsync(HttpContext context, IServiceProvider serviceProvider)
+    public async Task InvokeAsync(HttpContext context)
     {
-        using var scope = serviceProvider.CreateScope();
-        var repository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-
         if (context.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
         {
             var token = authorizationHeader.FirstOrDefault()?.Split(" ").Last();
 
-            User? user = null;
-
             if (!string.IsNullOrEmpty(token) && context.User.Identity?.IsAuthenticated == true)
             {
-                var userName = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+                var userId = context.User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
 
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    user = await repository.GetByUserNameAsync(userName);
-                }
-
-                if (user == null || !user.IsActive)
+                if (string.IsNullOrWhiteSpace(userId) || _userCacheService.TryGetInactiveUser(userId, out object? user))
                 {
                     _logger.LogWarning("Unauthorized: Name claim not found.");
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
