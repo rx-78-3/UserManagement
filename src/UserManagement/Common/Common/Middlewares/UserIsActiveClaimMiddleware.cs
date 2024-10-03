@@ -25,9 +25,11 @@ public class UserIsActiveClaimMiddleware
 
             if (!string.IsNullOrEmpty(token) && context.User.Identity?.IsAuthenticated == true)
             {
-                var userId = context.User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+                var userIdString = context.User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
 
-                if (string.IsNullOrWhiteSpace(userId) || _userCacheService.TryGetInactiveUser(userId, out object? user))
+                if (string.IsNullOrWhiteSpace(userIdString) ||
+                    !Guid.TryParse(userIdString, out var userId) ||
+                    _userCacheService.IsUserInactive(userId))
                 {
                     _logger.LogWarning("Unauthorized: Name claim not found.");
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;

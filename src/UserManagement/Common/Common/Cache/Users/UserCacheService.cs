@@ -19,33 +19,28 @@ public class UserCacheService : IUserCacheService
         Initialize(userRepository);
     }
 
-    public bool TryGetInactiveUser(object key, out object? value)
+    public bool IsUserInactive(Guid userId)
     {
-        return _memoryCache.TryGetValue($"{InactiveUserKeyPrefix}_{key}", out value);
+        return _memoryCache.TryGetValue($"{InactiveUserKeyPrefix}_{userId}", out _);
     }
 
     public void UpdateInactiveUsers(IEnumerable<User> updatedUsers)
     {
         foreach (var user in updatedUsers)
         {
-            var isUserCached = TryGetInactiveUser(user.Id, out object? cachedUser);
-            
-            if (user.IsActive)
+            var isInactiveUserCached = IsUserInactive(user.Id);
+
+            if (isInactiveUserCached)
             {
-                if (isUserCached)
+                if (user.IsActive)
                 {
                     _memoryCache.Remove($"{InactiveUserKeyPrefix}_{user.Id}");
                 }
-
-                return;
             }
-
-            if (!isUserCached)
+            else
             {
-                _memoryCache.CreateEntry($"{InactiveUserKeyPrefix}_{user.Id}");
+                _memoryCache.Set($"{InactiveUserKeyPrefix}_{user.Id}", true); // Just a placeholder since we don't need the user object.
             }
-
-            _memoryCache.Set($"{InactiveUserKeyPrefix}_{user.Id}", new { user.IsActive });
         }
     }
 
@@ -56,7 +51,7 @@ public class UserCacheService : IUserCacheService
         // Initialize the cache with inactive users.
         foreach (var user in users)
         {
-            _memoryCache.Set($"{InactiveUserKeyPrefix}_{user.Id}", new { user.IsActive });
+            _memoryCache.Set($"{InactiveUserKeyPrefix}_{user.Id}", true); // Just a placeholder since we don't need the user object.
         }
     }
 }

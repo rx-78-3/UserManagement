@@ -4,6 +4,6 @@ namespace Common.Cache.Users;
 
 public interface IUserCacheService
 {
-    bool TryGetInactiveUser(object key, out object? value);
+    bool IsUserInactive(Guid userId);
     void UpdateInactiveUsers(IEnumerable<User> allUsers);
 }
